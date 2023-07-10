@@ -5,6 +5,7 @@ import numpy as np
 from tensorflow.keras.models import load_model
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playerindex
+from rapidfuzz import fuzz, process
 
 app = Flask(__name__)
 app.debug = True
@@ -14,14 +15,8 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 model = load_model('/Users/rayant/app2/model/med_model.h5')
 scaler = load('/Users/rayant/app2/model/scaler.joblib')
 
-# @app.route("/", methods=['POST'])
-# @cross_origin()
-# def helloWorld():
-#   input_array = request.get_json().get('inputArray')
-#   input_array = np.array(input_array).reshape(1, -1)
-#   input_array = scaler.transform(input_array)
-#   pred = model.predict(input_array)
-#   return str(pred[0][0]), 200
+actives = players.get_active_players()
+name_list = [active_player['full_name'] for active_player in actives]
 
 @app.route("/convert", methods=['POST'])
 @cross_origin()
@@ -30,7 +25,8 @@ def nameToNumber():
         input_name = request.get_json().get('inputArray')
         plays = players.find_players_by_full_name(input_name)
         if not plays:
-          return {"message": 'Give another name'}, 400
+          selected = process.extractOne(input_name, name_list, scorer=fuzz.WRatio)
+          return {"message": f'Did you mean to specify "{selected[0]}"?'}, 400
         play_id = plays[0]['id']
         p = playerindex.PlayerIndex(season="2022-23")
         p_df = p.get_data_frames()[0]

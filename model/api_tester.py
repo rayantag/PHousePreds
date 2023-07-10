@@ -5,23 +5,29 @@ from nba_api.stats.endpoints import defensehub, draftboard, drafthistory, player
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from rapidfuzz import fuzz, process
 
+actives = players.get_active_players()
 
+name_list = [active_player['full_name'] for active_player in actives]
 
 # Fetch team defensive stats for a season
 
-input = 'shai gilgeous-alexander'
+input = 'shasdfai gilgeous-alexander'
 
-plays = players.find_players_by_full_name(input)
-if not plays:
-    print("Error!")
-play_id = plays[0]['id']
+selected = process.extractOne(input, name_list, scorer=fuzz.WRatio)
+print(selected[0])
 
-p = playerindex.PlayerIndex(season="2022-23")
-p_df = p.get_data_frames()[0]
-player_row = p_df[p_df['PERSON_ID'] == play_id]
-vals = [player_row['PTS'].values[0], player_row['REB'].values[0], player_row['AST'].values[0]]
-print(vals)
+# plays = players.find_players_by_full_name(input)
+# if not plays:
+#     print("Error!")
+# play_id = plays[0]['id']
+
+# p = playerindex.PlayerIndex(season="2022-23")
+# p_df = p.get_data_frames()[0]
+# player_row = p_df[p_df['PERSON_ID'] == play_id]
+# vals = [player_row['PTS'].values[0], player_row['REB'].values[0], player_row['AST'].values[0]]
+# print(vals)
 
 #team_defense = leaguedashptteamdefend.LeagueDashPtTeamDefend(season='2022-23')
 #team_defense_df = team_defense.get_data_frames()[0]

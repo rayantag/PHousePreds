@@ -58,17 +58,9 @@ function Predhead() {
 
   const handleSubmit = () => {
     setIsSubmitted(true);
-    // setDisplayText("hello!");
-    
-    // const inputArray = [27, 7, 7, 33]
-    // const inputArray = inputText.split('').map(Number);
-    // console.log(inputText);
-    // console.log(inputArray);
-    // inputArray = [35, 7, 7];
-
     const inputArray = inputText;
 
-    fetch('http://127.0.0.1:5000/convert', { // Use your Flask server URL
+    fetch('http://127.0.0.1:5000/convert', { 
       method: 'POST', // or 'GET'
       headers: {
         'Content-Type': 'application/json',
@@ -76,9 +68,9 @@ function Predhead() {
       body: JSON.stringify({ inputArray })
       // body: JSON.stringify({ inputArray }), // send the inputText to the server
     })
-    .then(response => response.json()) // Convert response to text (since the server is returning plain text)
+    .then(response => response.json()) // Convert response to JSON.
     .then(data => {
-      setDisplayText(data.message); // set the server response to displayText state
+      setDisplayText(data.message);
     })
     .catch((error) => {
       console.error('Error:', error);
