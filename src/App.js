@@ -60,13 +60,15 @@ function Predhead() {
     setIsSubmitted(true);
     // setDisplayText("hello!");
     
-    const inputArray = [27, 7, 7, 33]
+    // const inputArray = [27, 7, 7, 33]
     // const inputArray = inputText.split('').map(Number);
     // console.log(inputText);
     // console.log(inputArray);
     // inputArray = [35, 7, 7];
 
-    fetch('http://127.0.0.1:5000/', { // Use your Flask server URL
+    const inputArray = inputText;
+
+    fetch('http://127.0.0.1:5000/convert', { // Use your Flask server URL
       method: 'POST', // or 'GET'
       headers: {
         'Content-Type': 'application/json',
@@ -74,9 +76,9 @@ function Predhead() {
       body: JSON.stringify({ inputArray })
       // body: JSON.stringify({ inputArray }), // send the inputText to the server
     })
-    .then(response => response.text()) // Convert response to text (since the server is returning plain text)
-    .then(text => {
-      setDisplayText(text); // set the server response to displayText state
+    .then(response => response.json()) // Convert response to text (since the server is returning plain text)
+    .then(data => {
+      setDisplayText(data.message); // set the server response to displayText state
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -90,12 +92,12 @@ function Predhead() {
         <p id="predict-about">Input any current NBA player's name to get projections for their next game!</p>
         <div className="input-area">
           <input className="user-input" placeholder="input a player!" type="text" value={inputText} onChange={handleInputChange}></input>
-          {displayText && <p className="try">{displayText}</p>}
+           {/* {displayText && <p className="try">{displayText}</p>}  */}
           <button className="submit-button" onClick={handleSubmit}>Submit</button>
         </div>
       </div>
       <div className="helloMessage" style={{ opacity: isSubmitted ? '1' : '0', visibility: isSubmitted ? 'visible' : 'hidden' }}>
-      {inputText}
+      {displayText}
       </div>
     </div>
   );
