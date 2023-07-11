@@ -13,15 +13,18 @@ name_list = [active_player['full_name'] for active_player in actives]
 
 # Fetch team defensive stats for a season
 
-input = 'shasdfai gilgeous-alexander'
+# input = 'shasdfai gilgeous-alexander'
 
-selected = process.extractOne(input, name_list, scorer=fuzz.WRatio)
-print(selected[0])
+# selected = process.extractOne(input, name_list, scorer=fuzz.WRatio)
+# print(selected[0])
 
-# plays = players.find_players_by_full_name(input)
-# if not plays:
-#     print("Error!")
-# play_id = plays[0]['id']
+input = 'Pole'
+plays = players.find_players_by_full_name(input)
+if not plays:
+    print("Error!")
+print(plays)
+#play_id = plays[0]['id']
+#print(play_id)
 
 # p = playerindex.PlayerIndex(season="2022-23")
 # p_df = p.get_data_frames()[0]
