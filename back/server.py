@@ -9,6 +9,7 @@ from rapidfuzz import fuzz, process
 
 app = Flask(__name__)
 app.debug = True
+
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
@@ -35,7 +36,7 @@ def nameToNumber():
         model_input = np.array(vals).reshape(1, -1)
         model_input = scaler.transform(model_input)
         pred = model.predict(model_input)
-        return {"message": str(pred[0][0])}, 200
+        return {"message": str(pred[0][0]), "id": play_id}, 200
     except Exception as e:
         print(e)
         return {"error": str(e)}, 400

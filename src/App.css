@@ -86,6 +86,29 @@
     margin: auto;
   }
 
+.playerInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+.playerImage img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: auto;
+  }
+  
+  .playerPrediction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .playerPrediction h2 {
+    margin-bottom: 10px;
+  }
+
 .predict-head {
     font-family: "Lucida Console", "Courier New", monospace;
     text-align: center;
@@ -135,6 +158,8 @@
     color: black;
     transform: scale(1.1);
   }
+
+
 
 .bigDiv {
     display: flex;

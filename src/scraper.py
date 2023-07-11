@@ -1,6 +1,20 @@
 import json
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
+
+# options = Options()
+# options.add_experimental_option("detach", True)
+
+# driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(), options=options))
+
+# driver.get("https://www.google.com")
+# while(True):
+#     pass
+
 
 URL = 'https://www.espn.com/nba-summer-league/schedule'
 page = requests.get(URL) # This line gets the HTML code from the given URL. 

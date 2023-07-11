@@ -51,6 +51,7 @@ function Predhead() {
   const [inputText, setInputText] = useState('');
   const [displayText, setDisplayText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [id, setID] = useState('');
   
   const handleInputChange = (e) => {
     setInputText(e.target.value);
@@ -71,6 +72,7 @@ function Predhead() {
     .then(response => response.json()) // Convert response to JSON.
     .then(data => {
       setDisplayText(data.message);
+      setID(data.id);
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -84,12 +86,19 @@ function Predhead() {
         <p id="predict-about">Input any current NBA player's name to get projections for their next game!</p>
         <div className="input-area">
           <input className="user-input" placeholder="input a player!" type="text" value={inputText} onChange={handleInputChange}></input>
-           {/* {displayText && <p className="try">{displayText}</p>}  */}
           <button className="submit-button" onClick={handleSubmit}>Submit</button>
         </div>
       </div>
       <div className="helloMessage" style={{ opacity: isSubmitted ? '1' : '0', visibility: isSubmitted ? 'visible' : 'hidden' }}>
-      {displayText}
+        <div className="playerInfo">
+          <div className="playerImage">
+            {id && <img src={`https://cdn.nba.com/headshots/nba/latest/260x190/${id}.png`} alt="Player" />}
+          </div>
+          <div className="playerPrediction">
+            <h2>PREDICTED POINTS</h2>
+            {displayText}
+          </div>
+        </div>
       </div>
     </div>
   );
