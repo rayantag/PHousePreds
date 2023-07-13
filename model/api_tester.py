@@ -6,10 +6,24 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from rapidfuzz import fuzz, process
+import requests
+import json
 
-actives = players.get_active_players()
+# Balldontlie API tests.
 
-name_list = [active_player['full_name'] for active_player in actives]
+#url = "https://www.balldontlie.io/api/v1/players"
+statsURL = "https://www.balldontlie.io/api/v1/stats?seasons[]=2022&player_ids[]=237&postseason=true"
+#bronURL = "https://www.balldontlie.io/api/v1/players/237"
+
+response = requests.get(statsURL)
+data = response.json()
+for dot in data["data"]:
+    print (dot["pts"], dot["reb"], dot["ast"])
+
+
+# actives = players.get_active_players()
+
+# name_list = [active_player['full_name'] for active_player in actives]
 
 # Fetch team defensive stats for a season
 
@@ -18,11 +32,11 @@ name_list = [active_player['full_name'] for active_player in actives]
 # selected = process.extractOne(input, name_list, scorer=fuzz.WRatio)
 # print(selected[0])
 
-input = 'Pole'
-plays = players.find_players_by_full_name(input)
-if not plays:
-    print("Error!")
-print(plays)
+# input = 'Pole'
+# plays = players.find_players_by_full_name(input)
+# if not plays:
+#     print("Error!")
+# print(plays)
 #play_id = plays[0]['id']
 #print(play_id)
 

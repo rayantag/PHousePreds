@@ -1,7 +1,13 @@
 import json
+import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 # This scraper uses a blend of Selenium webdriver and Beautifulsoup to get summer league team names and logos. 
 # Beautifulsoup is simpler than Selenium, but it could not be used to get the team logos because their static 
@@ -49,6 +55,30 @@ def getTeamsAndLogos(schedule_webpage):
     # Save to a JSON, which will be sent to client-side app.
     with open('matches.json', 'w') as f:
         json.dump(matches, f)
-    
+
+
+# TODO: fix this method to get top-performing players.
+
+performURL = "https://www.nba.com/2023-summer-league-vegas-player-stats"
+def getPerformers(perform_webpage):
+
+    # Set up chrome options and webdriver in headless mode, same as before.
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
+    driver.get(perform_webpage)
+
+    # Now tried to wait so that the JavaScript could render the table before inspecting HTML. Got a TimeOutError, which means that 
+    # the className was not found. The className provided could be wrong, however.
+    try:
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "Crom_body__UYOcU"))
+        )
+    finally:
+        driver.quit()
+
+    print(driver.page_source)
+   
 if __name__ == "__main__":
     getTeamsAndLogos(currURL)
+    # getPerformers(performURL)

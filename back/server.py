@@ -27,7 +27,7 @@ def nameToNumber():
         plays = players.find_players_by_full_name(input_name)
         if not plays:
           selected = process.extractOne(input_name, name_list, scorer=fuzz.WRatio)
-          return {"message": f'Did you mean to specify "{selected[0]}"?', "id": 0}, 400
+          return {"message": f'Did you mean to specify "{selected[0]}"?', "id": -1}, 400
         if (len(plays) > 1):
             return {"message": "Please be more specific!", "id": 0}, 400
         play_id = plays[0]['id']

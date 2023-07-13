@@ -52,31 +52,38 @@ function Predhead() {
   const [displayText, setDisplayText] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [id, setID] = useState('');
+  const [suggestedName, setSuggestedName] = useState('');
   
   const handleInputChange = (e) => {
     setInputText(e.target.value);
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (input = inputText) => {
     setIsSubmitted(true);
-    const inputArray = inputText;
 
     fetch('http://127.0.0.1:5000/convert', { 
       method: 'POST', // or 'GET'
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ inputArray })
-      // body: JSON.stringify({ inputArray }), // send the inputText to the server
+      body: JSON.stringify({ inputArray: input })
     })
     .then(response => response.json()) // Convert response to JSON.
     .then(data => {
       setDisplayText(data.message);
       setID(data.id);
+      if (data.id === -1) {
+        setSuggestedName(data.message.split('"')[1]);
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
     });
+  }
+
+  const handleSuggestion = () => {
+    setInputText(suggestedName)
+    handleSubmit(suggestedName)
   }
 
   return (
@@ -86,17 +93,19 @@ function Predhead() {
         <p id="predict-about">Input any current NBA player's name to get projections for their next game!</p>
         <div className="input-area">
           <input className="user-input" placeholder="input a player!" type="text" value={inputText} onChange={handleInputChange}></input>
-          <button className="submit-button" onClick={handleSubmit}>Submit</button>
+          {/* Don't want to pass in an event object to handleSubmit, so use arrow function to invoke handleSubmit (no args). */}
+          <button className="submit-button" onClick={() => handleSubmit()}>Submit</button>
         </div>
       </div>
       <div className="helloMessage" style={{ opacity: isSubmitted ? '1' : '0', visibility: isSubmitted ? 'visible' : 'hidden' }}>
         <div className="playerInfo">
           <div className="playerImage">
-            {id && <img src={`https://cdn.nba.com/headshots/nba/latest/260x190/${id}.png`} alt="Player" />}
+            {(id === -1 || id === 0) ? null : <img src={`https://cdn.nba.com/headshots/nba/latest/260x190/${id}.png`} alt="Player" />}
           </div>
           <div className="playerPrediction">
             <h2>PREDICTED POINTS</h2>
             {displayText}
+            {id === -1 ? <button className="yesButton" onClick={handleSuggestion}>Yes</button> : null}
           </div>
         </div>
       </div>
