@@ -15,7 +15,7 @@ TDOD:
 Implement trainBasicModel method which will allow you to train by importing this package somewhere else.
 """
 
-full_data = pd.read_csv('../../../datasets/med_data.csv')
+full_data = pd.read_csv('../../../datasets/player_features.csv')
 preprocesser = PreprocessBasicModel(full_data)
 train_data, test_data, train_labels, test_labels = preprocesser.getProcessedDataTraining()
 
