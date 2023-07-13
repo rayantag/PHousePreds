@@ -12,8 +12,8 @@ app.debug = True
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-model = load_model('/Users/rayant/app2/model/med_model.h5')
-scaler = load('/Users/rayant/app2/model/scaler.joblib')
+model = load_model('../points_predictor/models/med_model.h5')
+scaler = load('../points_predictor/scaler.joblib')
 
 actives = players.get_active_players()
 name_list = [active_player['full_name'] for active_player in actives]

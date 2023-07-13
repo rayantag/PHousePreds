@@ -47,7 +47,7 @@ for _, player in players_to_use.iterrows():
 
 # Combine all dataframes
 all_data_df = pd.concat(all_player_data, ignore_index=True)
-all_data_df.to_csv('med_data.csv', index=False)
+all_data_df.to_csv('../../datasets/med_data.csv', index=False)
 
 # Fetch team defensive stats for a season
 
