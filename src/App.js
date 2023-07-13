@@ -225,10 +225,5 @@ const PLAYERS = [
   {name: "zags", playerID: 5, points: 14, rebounds: 5, assists: 545},
 ];
 
-// const MATCHES = [
-//   {homeTeam: "Nuggets", awayTeam: "Heat"},
-//   {homeTeam: "Spurs", awayTeam: "Magic"},
-// ];
-
 const items = [{ name: 'Option 1' }, { name: 'Option 2' }, { name: 'Option 3' }];
 
