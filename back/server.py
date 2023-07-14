@@ -9,11 +9,12 @@ from rapidfuzz import fuzz, process
 
 app = Flask(__name__)
 app.debug = True
+
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-model = load_model('../points_predictor/models/med_model.h5')
-scaler = load('../points_predictor/scaler.joblib')
+model = load_model('/Users/rayant/app2/model/med_model.h5')
+scaler = load('/Users/rayant/app2/model/scaler.joblib')
 
 actives = players.get_active_players()
 name_list = [active_player['full_name'] for active_player in actives]
@@ -26,16 +27,20 @@ def nameToNumber():
         plays = players.find_players_by_full_name(input_name)
         if not plays:
           selected = process.extractOne(input_name, name_list, scorer=fuzz.WRatio)
-          return {"message": f'Did you mean to specify "{selected[0]}"?'}, 400
+          return {"message": f'Did you mean to specify "{selected[0]}"?', "id": -1}, 400
+        if (len(plays) > 1):
+            return {"message": "Please be more specific!", "id": 0}, 400
         play_id = plays[0]['id']
         p = playerindex.PlayerIndex(season="2022-23")
         p_df = p.get_data_frames()[0]
         player_row = p_df[p_df['PERSON_ID'] == play_id]
+        if player_row.empty:
+            return {"message": "Please input a different name!", "id": 0}, 400
         vals = [player_row['PTS'].values[0], player_row['REB'].values[0], player_row['AST'].values[0], 33]
         model_input = np.array(vals).reshape(1, -1)
         model_input = scaler.transform(model_input)
         pred = model.predict(model_input)
-        return {"message": str(pred[0][0])}, 200
+        return {"message": str(pred[0][0]), "id": play_id}, 200
     except Exception as e:
         print(e)
         return {"error": str(e)}, 400
