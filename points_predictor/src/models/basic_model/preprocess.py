@@ -3,6 +3,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 from joblib import dump, load
+import os
 
 """
 This class is what will do the feature selection for the basic model.
@@ -14,15 +15,15 @@ Then, get the processed data by calling getProcessedData: processedData = prepro
 class PreprocessBasicModel:
     def __init__(self, data):
         self.full_data = data
+        self.scalerPath = os.path.join(os.path.dirname(__file__), 'scaler.joblib')
         try:
-            self.scaler = load('scaler.joblib')
+            self.scaler = load(self.scalerPath)
         except OSError:
             self.scaler = StandardScaler()
 
     def getProcessedData(self):
         features = self.full_data[['AVG_PTS', 'AVG_REB', 'AVG_AST', 'MIN']].values
-        return self.scaler.transform(features)
-    
+        return self.scaler.transform(features)    
 
     def getProcessedDataTraining(self, test_size = 0.2, random_state = 81):
         features = self.full_data[['AVG_PTS', 'AVG_REB', 'AVG_AST', 'MIN']].values
@@ -37,4 +38,4 @@ class PreprocessBasicModel:
 
     
     def done(self):
-        dump(self.scaler, 'scaler.joblib') 
+        dump(self.scaler, self.scalerPath) 

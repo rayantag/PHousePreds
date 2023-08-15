@@ -5,7 +5,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from joblib import dump, load
 from preprocess import PreprocessBasicModel
-from model import getBasicModel
+from model import BasicModel
+import os
 
 """
 Training script for basic model.
@@ -15,16 +16,19 @@ TDOD:
 Implement trainBasicModel method which will allow you to train by importing this package somewhere else.
 """
 
-full_data = pd.read_csv('../../../datasets/player_features.csv')
+currPath = os.path.dirname(__file__)
+fullDataPath = os.path.join(currPath, '../../../datasets/player_features.csv')
+full_data = pd.read_csv(os.path.normpath(fullDataPath))
+
 preprocesser = PreprocessBasicModel(full_data)
 train_data, test_data, train_labels, test_labels = preprocesser.getProcessedDataTraining()
 
-basic_model = getBasicModel(
-                                4,                # number of layers
-                                [150, 50, 8, 1],  # number of nodes in each layer 
-                                (4,),             # input shape
-                                ['relu', 'relu', 'relu']  # activation functions -- only 2 as first and last layer dont have
-                            )
+basic_model = BasicModel(
+                            4,                # number of layers
+                            [150, 50, 8, 1],  # number of nodes in each layer 
+                            (4,),             # input shape
+                            ['relu', 'relu', 'relu']  # activation functions -- only 2 as first and last layer dont have
+                        )
 
 if __name__ == "__main__":
     basic_model.summary()
@@ -44,4 +48,5 @@ if __name__ == "__main__":
     plt.legend(['Train', 'Validation'], loc='upper right')
     plt.show()
 
-    basic_model.save('../../../models/basic_model.h5')
+    modelPath = os.path.join(currPath, '../../../models/basic_model.h5')
+    basic_model.save(os.path.normpath(modelPath))

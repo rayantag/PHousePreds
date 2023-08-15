@@ -1,3 +1,4 @@
+from points_predictor.Predictor import PointsPredictor
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from joblib import dump, load
@@ -6,15 +7,13 @@ from tensorflow.keras.models import load_model
 from nba_api.stats.static import players
 from nba_api.stats.endpoints import playerindex
 from rapidfuzz import fuzz, process
+import pandas as pd
 
 app = Flask(__name__)
 app.debug = True
 
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
-
-model = load_model('../points_predictor/models/med_model.h5')
-scaler = load('../points_predictor/src/models/basic_model/scaler.joblib')
 
 actives = players.get_active_players()
 name_list = [active_player['full_name'] for active_player in actives]
@@ -36,11 +35,17 @@ def nameToNumber():
         player_row = p_df[p_df['PERSON_ID'] == play_id]
         if player_row.empty:
             return {"message": "Please input a different name!", "id": 0}, 400
-        vals = [player_row['PTS'].values[0], player_row['REB'].values[0], player_row['AST'].values[0], 33]
-        model_input = np.array(vals).reshape(1, -1)
-        model_input = scaler.transform(model_input)
-        pred = model.predict(model_input)
-        return {"message": str(pred[0][0]), "id": play_id}, 200
+        predictor = PointsPredictor("basic_model", 
+                            {
+                                "num_layers": 4,                     # number of layers
+                                "num_nodes": [150, 50, 8, 1],        # number of nodes in each layer 
+                                "input_shape": (4,),                 # input shape
+                                "act_fns": ['relu', 'relu', 'relu']  # activation functions -- only 2 as first and last layer dont have
+                            }
+                        )
+        pred = predictor.predict(play_id)
+
+        return {"message": str(pred), "id": play_id}, 200
     except Exception as e:
         print(e)
         return {"error": str(e)}, 400

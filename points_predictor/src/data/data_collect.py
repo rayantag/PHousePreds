@@ -48,7 +48,7 @@ def collectAllPlayerData(num_players):
 
 if __name__ == "__main__":
     print("Compiling all player data into raw player data.")
-    collectAllPlayerData(100)
+    collectAllPlayerData(300)
 
 
 
