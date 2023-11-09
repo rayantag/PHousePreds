@@ -18,13 +18,6 @@ def getSinglePlayerData(player_id):
         return None
     
     player_flipped = player_df.iloc[::-1].reset_index(drop=True)
-
-    # categories = ['PTS', 'REB', 'AST', 'MIN']
-
-    # for category in categories:
-    #     avg_col_name = f'AVG_{category}'
-    #     player_flipped[avg_col_name] = player_flipped.groupby('SEASON_ID')[category].expanding().mean().shift(1).reset_index(0,drop=True)
-    #     player_flipped[avg_col_name] = player_flipped[avg_col_name].fillna(player_flipped[category])
     
     return player_flipped
 

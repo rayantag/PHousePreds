@@ -67,7 +67,6 @@ class BasicModel():
     def predict(self, data, verbose = False):
         preprocess = PreprocessBasicModel(data)
         test_data = preprocess.getProcessedData()
-
         prediction = self.model.predict(test_data)
 
         if verbose: print(f'Predicted points: {prediction[0][0]}')

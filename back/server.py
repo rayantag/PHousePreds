@@ -30,7 +30,7 @@ def nameToNumber():
         if (len(plays) > 1):
             return {"message": "Please be more specific!", "id": 0}, 400
         play_id = plays[0]['id']
-        p = playerindex.PlayerIndex(season="2022-23")
+        p = playerindex.PlayerIndex(season="2023-24")
         p_df = p.get_data_frames()[0]
         player_row = p_df[p_df['PERSON_ID'] == play_id]
         if player_row.empty:

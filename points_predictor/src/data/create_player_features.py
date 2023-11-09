@@ -5,6 +5,7 @@ from nba_api.stats.endpoints import defensehub, draftboard, drafthistory, player
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 """
 This is where the features will be created and saved.
@@ -29,6 +30,10 @@ def getAveragePlayerStats(data, categories):
     full_player_stats = pd.concat(all_players, ignore_index=True)
     return full_player_stats
 
+def collectPlayerFeatures(data, categories, model_name):
+    currPath = os.path.dirname(__file__)
+    fullDataPath = os.path.join(currPath, '../../datasets/raw_data.csv')
+    full_data = pd.read_csv(os.path.normpath(fullDataPath))
 
 
 if __name__ == "__main__":
@@ -36,4 +41,4 @@ if __name__ == "__main__":
     categories = ['PTS', 'REB', 'AST', 'MIN']
     raw_data = pd.read_csv('../../datasets/raw_data.csv')
     stats_df = getAveragePlayerStats(raw_data, categories)
-    stats_df.to_csv('../../datasets/player_features.csv', index=False)
+    stats_df.to_csv('../../datasets/raw_data.csv', index=False)
