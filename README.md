@@ -15,12 +15,14 @@ $ pip install -r requirements.txt
 ## How to run
 Run the following command from the PHousePreds directory:
 ```
-python -m back.server
+$ python -m back.server
 ```
 
-Then, open a new terminal session and run the following command from `PHousePreds/src`:
+Then, open a new terminal session and run the following commands from the `PHousePreds` directory:
 ```
-npm start
+$ source PinkHousePredictions/bin/activate
+$ cd src
+$ npm start
 ```
 
 ## Possible Issues
