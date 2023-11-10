@@ -22,3 +22,14 @@ Then, open a new terminal session and run the following command from `PHousePred
 ```
 npm start
 ```
+
+## Possible Issues
+When you run `npm start` in PHousePreds/src, if you get an error saying
+```
+Module not found: Error: Can't resolve '@fortawesome/react-fontawesome'
+```
+or anything similar, run the following command:
+```
+npm i --save @fortawesome/react-fontawesome
+```
+and then run `npm start` again.
