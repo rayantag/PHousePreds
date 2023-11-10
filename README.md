@@ -30,7 +30,7 @@ When you run `npm start` in PHousePreds/src, if you get an error saying
 ```
 Module not found: Error: Can't resolve '@fortawesome/react-fontawesome'
 ```
-or anything similar, run the following command:
+or any similar error relating to not being able to resolve `'@fortawesome/...'`, run the following command:
 ```
 npm i --save @fortawesome/react-fontawesome
 ```
